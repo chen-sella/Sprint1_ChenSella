@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Minesweeper</title>
+</head>
+
+<body onload="initGame()">
+    <table onmousedown="startClock()">
+        <div class="container">
+            <a id="4" class="difficulty" onclick="setGame(4)">Beginner</a>
+            <a id="8" class="difficulty" onclick="setGame(8)">Medium</a>
+            <a id ="12" class="difficulty" onclick="setGame(12)">Expert</a>
+        </div>
+        <div class="gameStatus" onclick="initGame()"></div>
+        <div class="timer">Game Time:<span class="time">0</span></div>
+        <tbody class="board">
+
+        </tbody>
+    </table>
+    <script src="js/util.js"></script>
+    <script src="js/stopwatch.js"></script>
+    <script src="js/game.js"></script>
+</body>
+
+</html>
