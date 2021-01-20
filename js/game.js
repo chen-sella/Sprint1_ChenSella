@@ -52,7 +52,6 @@ function buildBoard(size) {
       board[i][j] = cell;
     }
   }
-  console.table(board);
   console.log(board);
   return board;
 }
@@ -104,46 +103,42 @@ function cellClicked(elCell, i, j) {
   var cell = gBoard[i][j];
 
   if (cell.isMarked) return;
-
   else if (cell.isShown) return;
-
   else if (cell.isMine) {
     gameOver();
     return;
-    
   } else {
     cell.isShown = true;
     gGame.shownCount++;
     elCell.classList.add('flipped');
-    var value = getCellValue(cell);
-    elCell.innerHTML = value;
-    checkGameOver();
+    if (!cell.minesAroundCount) expandShown(gBoard, elCell, i, j);
+    else{
+        var value = getCellValue(cell);
+        elCell.innerHTML = value;
+        checkGameOver();
+    }
   }
+  console.log(gGame.shownCount);
 }
 
 function getCellValue(cell) {
-  var value;
+    var value;
 
-  switch (cell.minesAroundCount) {
-    case 1:
-      value = ONE;
-      break;
-    case 2:
-      value = TWO;
-      break;
-    case 3:
-      value = THREE;
-      break;
-    default:
-      value = EMPTY;
-      break;
-  }
-  return value;
+    if (cell.minesAroundCount===0){
+        value = EMPTY
+    }
+    else{
+        value = cell.minesAroundCount;
+    }
+
+    return value;
 }
 
 function cellMarked(ev, i, j) {
   var cell = gBoard[i][j];
   var elCell = document.querySelector(`#cell-${i}-${j}`);
+
+  if (cell.isShown) return;
 
   if (ev.which == 3) {
     if (cell.isMarked) {
@@ -160,7 +155,6 @@ function cellMarked(ev, i, j) {
 
 function checkGameOver() {
   var cellsToMark = Math.pow(gLevel.SIZE, 2) - gLevel.MINES;
-  console.log('Hi');
   if (gGame.markedCount === gLevel.MINES && gGame.shownCount === cellsToMark) {
     console.log('Victory!');
     stopClock();
@@ -168,7 +162,27 @@ function checkGameOver() {
   }
 }
 
-function expandShown(board, elCell, i, j) {}
+function expandShown(board, elCell, i, j) {
+  var pos = { i: i, j: j };
+
+  for (var i = pos.i - 1; i <= pos.i + 1; i++) {
+    if (i < 0 || i > board.length - 1) continue;
+    for (var j = pos.j - 1; j <= pos.j + 1; j++) {
+      if (j < 0 || j > board[0].length - 1) continue;
+      if (i === pos.i && j === pos.j) continue;
+
+      var neighbor = board[i][j];
+      var elNeighbor = document.querySelector(`#cell-${i}-${j}`);
+      elNeighbor.innerHTML = getCellValue(neighbor);
+      elNeighbor.classList.add('flipped');
+      if (!neighbor.isShown){
+        neighbor.isShown = true;
+        gGame.shownCount++
+      }
+    }
+  }
+}
+
 
 function gameOver() {
   gGame.isOn = false;
