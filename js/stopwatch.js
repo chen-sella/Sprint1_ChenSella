@@ -17,7 +17,6 @@ function stopClock() {
   if (gInterval) {
     clearInterval(gInterval);
     gInterval = null;
-    gTime.innerHTML = 0;
   }
 }
 

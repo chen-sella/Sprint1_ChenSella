@@ -11,38 +11,31 @@ const THREE = '3️';
 const EMPTY = '';
 
 var gBoard;
-var gLevel = {
-  SIZE: 4,
-  MINES: 2,
-};
+var gLevel;
 var gGame;
 var gElDiv = document.querySelector('.gameStatus');
 
-
-function initGame() {
+function initGame(size, mines) {
+  gLevel = {
+    SIZE: size,
+    MINES: mines,
+  };
   gBoard = buildBoard(gLevel.SIZE);
   randomMinesLocation(gLevel.MINES);
   setMinesNegsCount(gBoard);
   renderBoard(gBoard);
+
   gGame = {
     isOn: true,
     shownCount: 0, //How many cells are shown
     markedCount: 0, //How many cells are marked (with a flag)
     secsPassed: 0, //How many seconds passed
   };
-  gElDiv.innerHTML = STARTGAME; 
-  console.log(gGame);
-}
 
-// function setGame(size) {
-//   stopClock();
-//   gLevel = {
-//     SIZE: size.id,
-//   };
-//   if (size === 4) gLevel.MINES = 2;
-//   if (size === 8) gLevel.MINES = 12;
-//   if (size === 12) gLevel.MINES = 30;
-// }
+  gElDiv.innerHTML = STARTGAME;
+  stopClock();
+  gTime.innerHTML = 0;
+}
 
 function buildBoard(size) {
   var board = [];
@@ -50,7 +43,6 @@ function buildBoard(size) {
     board[i] = [];
     for (var j = 0; j < size; j++) {
       var cell = {
-        // type: EMPTY,
         minesAroundCount: 0,
         location: { i: i, j: j },
         isShown: false,
@@ -107,49 +99,47 @@ function renderBoard(board) {
 }
 
 function cellClicked(elCell, i, j) {
-    if(!gGame.isOn) return;
+  if (!gGame.isOn) return;
 
-    var cell = gBoard[i][j];
+  var cell = gBoard[i][j];
+
+  if (cell.isMarked) return;
+
+  else if (cell.isShown) return;
+
+  else if (cell.isMine) {
+    gameOver();
+    return;
     
-    if(cell.isMarked) return;
-
-    else if(cell.isShown) return;
-
-    else if (cell.isMine){
-        gameOver();
-        return;
-    }
-
-    else{
-        cell.isShown = true;
-        gGame.shownCount++;
-        elCell.classList.add('flipped');
-        var value = getCellValue(cell);
-        elCell.innerHTML = value;
-        checkGameOver();
-    }
+  } else {
+    cell.isShown = true;
+    gGame.shownCount++;
+    elCell.classList.add('flipped');
+    var value = getCellValue(cell);
+    elCell.innerHTML = value;
+    checkGameOver();
+  }
 }
 
-function getCellValue(cell){
-    var value;
+function getCellValue(cell) {
+  var value;
 
-    switch (cell.minesAroundCount) {
-        case 1:
-           value = ONE;
-          break;
-        case 2:
-          value = TWO;
-          break;
-        case 3:
-          value = THREE;
-          break;
-        default:
-          value = EMPTY;
-          break;
-    }
-    return value;
+  switch (cell.minesAroundCount) {
+    case 1:
+      value = ONE;
+      break;
+    case 2:
+      value = TWO;
+      break;
+    case 3:
+      value = THREE;
+      break;
+    default:
+      value = EMPTY;
+      break;
+  }
+  return value;
 }
-
 
 function cellMarked(ev, i, j) {
   var cell = gBoard[i][j];
@@ -169,17 +159,13 @@ function cellMarked(ev, i, j) {
 }
 
 function checkGameOver() {
-    var cellsToMark = Math.pow(gLevel.SIZE,2)-gLevel.MINES
-    console.log('Hi');
-  if (
-    gGame.markedCount === gLevel.MINES &&
-    gGame.shownCount === cellsToMark
-  ) {
+  var cellsToMark = Math.pow(gLevel.SIZE, 2) - gLevel.MINES;
+  console.log('Hi');
+  if (gGame.markedCount === gLevel.MINES && gGame.shownCount === cellsToMark) {
     console.log('Victory!');
     stopClock();
     gElDiv.innerHTML = VICTORY;
   }
-  
 }
 
 function expandShown(board, elCell, i, j) {}
@@ -201,20 +187,20 @@ function gameOver() {
 }
 
 function randomMinesLocation(mines) {
-    var num = 0;
-    var minePos = {
+  var num = 0;
+  var minePos = {
+    i: getRandomIntInclusive(0, gBoard.length - 1),
+    j: getRandomIntInclusive(0, gBoard.length - 1),
+  };
+
+  while (num < mines) {
+    if (!gBoard[minePos.i][minePos.j].isMine) {
+      gBoard[minePos.i][minePos.j].isMine = true;
+      num++;
+    }
+    minePos = {
       i: getRandomIntInclusive(0, gBoard.length - 1),
       j: getRandomIntInclusive(0, gBoard.length - 1),
     };
-  
-    while (num < mines) {
-      if (!gBoard[minePos.i][minePos.j].isMine) {
-        gBoard[minePos.i][minePos.j].isMine = true;
-        num++;
-      }
-      minePos = {
-        i: getRandomIntInclusive(0, gBoard.length - 1),
-        j: getRandomIntInclusive(0, gBoard.length - 1),
-      };
-    }
   }
+}

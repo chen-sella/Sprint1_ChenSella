@@ -6,6 +6,7 @@ body {
   margin: 20px;
   text-align: center;
 }
+
 .difficulty {
   border: 1px solid black;
   border-radius: 3px;
@@ -22,6 +23,8 @@ body {
 
 .gameStatus{
     text-align: center;
+    padding: 5px;
+    font-size: xx-large;
 }
 
 
@@ -39,19 +42,29 @@ table {
   margin: 30px;
   margin-left: auto;
   margin-right: auto;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
 td {
   border: 1px solid black;
-  padding: 10px;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  font-size: 15px;
 }
 
+td:after {
+    content: "\00A0";
+  }
+
 .cells {
-  background-color: #e5e5e5;
+    background: linear-gradient(to top, #d3d3d3, #d3d3d3, #d3d3d3, #d3d3d3, #d3d3d3, #BDBDBD, #9E9E9E);
+  /* background-color: #e5e5e5; */
 }
 
 .flipped {
-  background-color: #bfdaef;
+    background: linear-gradient(to top, #BDBDBD, #BDBDBD, #BDBDBD, #BDBDBD, #BDBDBD, #7d7d7d, #696969);
 }
 
 .empty {

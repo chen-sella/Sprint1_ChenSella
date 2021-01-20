@@ -10,15 +10,15 @@
     <title>Minesweeper</title>
 </head>
 
-<body onload="initGame()">
+<body onload="initGame(4,2)">
     <table onmousedown="startClock()">
         <div class="container">
-            <a id="4" class="difficulty" onclick="setGame(4)">Beginner</a>
-            <a id="8" class="difficulty" onclick="setGame(8)">Medium</a>
-            <a id ="12" class="difficulty" onclick="setGame(12)">Expert</a>
+            <a id="4" class="difficulty" onclick="initGame(4,2)">Beginner</a>
+            <a id="8" class="difficulty" onclick="initGame(8,12)">Medium</a>
+            <a id ="12" class="difficulty" onclick="initGame(12,30)">Expert</a>
         </div>
-        <div class="gameStatus" onclick="initGame()"></div>
-        <div class="timer">Game Time:<span class="time">0</span></div>
+        <div class="gameStatus" onclick="initGame(4,2)"></div>
+        <div class="timer">Game Time: <span class="time">0</span></div>
         <tbody class="board">
 
         </tbody>
