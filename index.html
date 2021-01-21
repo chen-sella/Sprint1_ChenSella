@@ -19,12 +19,12 @@
         <a id="12" class="difficulty" onclick="initGame(12,30)">Expert</a>
     </div>
     <div class="info">
-        <div class="lives">Lives:<span class="lives-count">3</span></div>
+        <div class="lives">Lives:<span class="lives-count">2</span></div>
         <div class="timer">Game Time: <span class="time">0</span></div>
         <div class="mines">Mines: <span class="mines-left"></span></div>
         <div class="best-time">Best time: <span class="best"></span></div>
     </div>
-    <div class="gameStatus" onclick="initGame(`${gLevel.SIZE}`,`${gLevel.MINES}`)"></div>
+    <div class="gameStatus" onclick="startOver()"></div>
     <div class="container">
         <!-- <div class="hint">
             <ul>
@@ -32,8 +32,8 @@
                 <li onclick="hint()">💡</li>
                 <li onclick="hint()">💡</li>
             </ul>
-        </div> -->
-        <table onmousedown="startClock()">
+        </div> -->       
+        <table>
             <tbody class="board"></tbody>
         </table>
     </div>

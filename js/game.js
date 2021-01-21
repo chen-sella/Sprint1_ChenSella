@@ -16,7 +16,6 @@ var gElLivesCount = document.querySelector('.lives-count');
 var gElBestTime = document.querySelector('.best');
 var gBestTime;
 
-
 function initGame(size, mines) {
   gLevel = {
     SIZE: size,
@@ -94,28 +93,33 @@ function cellClicked(elCell, i, j) {
   if (cell.isMarked) return;
   else if (cell.isShown) return;
   else if (cell.isMine) {
-    if (gGame.lives === 0) {
+    if (gGame.lives === 1) {
       gameOver();
       return;
     } else {
       decreaseLives(elCell);
       return;
     }
-  } else {
+  } 
+  else {
     cell.isShown = true;
     gGame.shownCount++;
     elCell.classList.add('flipped');
-    if (!cell.minesAroundCount) { 
-      if (gGame.shownCount === 1) { //first click on the board
+    if (!cell.minesAroundCount) {
+      if (gGame.shownCount === 1) {
+        //first click on the board
         expandShown(gBoard, i, j);
+        startClock();
         randomMinesLocation(gLevel.MINES);
         setMinesNegsCount(gBoard);
         renderBoard(gBoard);
       }
       expandShown(gBoard, i, j);
-    } else { //cell has mine neighbors so no expandShown
+    } else {
+      //cell has mine neighbors so no expandShown
       var value = getCellValue(cell);
       elCell.innerHTML = value;
+      style(cell, elCell);
       checkGameOver();
     }
   }
@@ -128,7 +132,8 @@ function cellMarked(ev, i, j) {
   if (cell.isShown) return; //can't locate a flag on a flipped cell
 
   if (ev.which == 3) {
-    if (cell.isMarked) { //checking if I'm re-pressing a flag;
+    if (cell.isMarked) {
+      //checking if I'm re-pressing a flag;
       elCell.innerHTML = EMPTY;
       cell.isMarked = false;
       gGame.markedCount--;
@@ -155,6 +160,7 @@ function expandShown(board, i, j) {
       var elNeighbor = document.querySelector(`#cell-${i}-${j}`);
       elNeighbor.innerHTML = getCellValue(neighbor);
       elNeighbor.classList.add('flipped');
+      style(neighbor, elNeighbor);
       if (!neighbor.isShown) {
         neighbor.isShown = true;
         gGame.shownCount++;
@@ -163,7 +169,7 @@ function expandShown(board, i, j) {
       // else{
       //   expandShown(board, i, j);
       // }
-      }
+    }
   }
   checkGameOver();
 }
@@ -171,6 +177,7 @@ function expandShown(board, i, j) {
 function gameOver() {
   gGame.isOn = false;
   stopClock();
+  gElLivesCount.innerHTML = '0';
 
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard.length; j++) {
@@ -188,7 +195,8 @@ function randomMinesLocation(mines) {
   var num = 0;
 
   while (num < mines) {
-    var minePos = { //draw two random numbers for i and j
+    var minePos = {
+      //draw two random numbers for i and j
       i: getRandomIntInclusive(0, gBoard.length - 1),
       j: getRandomIntInclusive(0, gBoard.length - 1),
     };
@@ -196,12 +204,32 @@ function randomMinesLocation(mines) {
     var elCell = document.querySelector(`#cell-${minePos.i}-${minePos.j}`);
     var isFlipped = elCell.classList.contains('flipped');
 
-    if (isFlipped) continue; //can't locate a mine on a flipped cell
-    else if (cell.isShown) continue; //can't locate a mine on a flipped cell
-    else if (cell.isMine) continue; //can't locate a mine on a mine
+    if (isFlipped) continue;
+    //can't locate a mine on a flipped cell
+    else if (cell.isShown) continue;
+    //can't locate a mine on a flipped cell
+    else if (cell.isMine) continue;
+    //can't locate a mine on a mine
     else {
       cell.isMine = true;
       num++;
     }
   }
+}
+
+function checkGameOver() {
+  var cellsToReveal = Math.pow(gLevel.SIZE, 2) - gLevel.MINES;
+  
+  if (
+    gGame.markedCount === gLevel.MINES &&
+    gGame.shownCount === cellsToReveal
+  ) {
+    stopClock();
+    gElDiv.innerHTML = VICTORY;
+    bestTime();
+  }
+}
+
+function manuallyCreate(){
+
 }

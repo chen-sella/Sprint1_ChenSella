@@ -1,28 +1,29 @@
 body {
   font-family: 'Signika', sans-serif;
   text-align: center;
-  background-color: sienna;
+  background-color: #e2d5ae;
 }
 
 h1 {
-  font-size: 48px;
+  font-size: 46px;
   margin: 1.5%;
   font-weight: bold;
-  background: -webkit-linear-gradient(black, #fff6b7);
+  background: -webkit-linear-gradient(black, #526E7C);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .diff-container {
-  margin: 2%;
+  margin: 0.5%;
   text-align: center;
 }
 
 .difficulty {
-  border: 1px solid black;
-  border-radius: 3px;
-  background-color: #fff6b7;
+  border: 4px solid #EDE0B6;
+  color: #526E7C;
+  font-weight: 600;
+  border-radius: 7px;
   padding: 0.5%;
   margin: 10px;
   cursor: pointer;
@@ -34,8 +35,7 @@ h1 {
 
 .gameStatus {
   text-align: center;
-  padding: 5px;
-  font-size: xx-large;
+  font-size: 33px;
   cursor: pointer;
   width: fit-content;
   margin-left: auto;
@@ -53,9 +53,10 @@ h1 {
 .lives,
 .mines,
 .best-time {
-  border: 1px solid black;
-  background-color: #fff6b7;
-  border-radius: 3px;
+  border: 4px solid #EDE0B6;
+  color: #526E7C;
+  font-weight: 600;
+  border-radius: 7px;
   padding: 0.5%;
   margin: 15px;
   display: inline;
@@ -69,14 +70,15 @@ h1 {
 } */
 
 table {
-  border-collapse: collapse;
+ 
   table-layout: fixed;
   margin-left: auto;
   margin-right: auto;
 }
 
 td {
-  border: 1px solid black;
+  border: 1px solid #EDE0B6;
+  border-radius: 6px;
   height: 38px;
   width: 38px;
   text-align: center;
@@ -91,32 +93,31 @@ td:after {
 .cells {
   background: linear-gradient(
     to top,
-    #d3d3d3,
-    #d3d3d3,
-    #d3d3d3,
-    #d3d3d3,
-    #d3d3d3,
-    #bdbdbd,
-    #9e9e9e
+    #EDE0B6,
+    #EDE0B6,
+    #EDE0B6,
+    #EDE0B6,
+    #EDE0B6,
+    #E8DAB3,
+    #DCCA95
   );
-  /* background-color: #e5e5e5; */
 }
 
 .flipped {
   background: linear-gradient(
     to top,
-    #bdbdbd,
-    #bdbdbd,
-    #bdbdbd,
-    #bdbdbd,
-    #bdbdbd,
-    #7d7d7d,
-    #696969
+    #DCCA95,
+    #DCCA95,
+    #DCCA95,
+    #DCCA95,
+    #DCCA95,
+    #dbd0b3,
+    #e0d4b3
   );
 }
 
 .empty {
-  background-color: #e5e5e5;
+  background-color: #DA693D;
 }
 
 .bomb {
