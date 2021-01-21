@@ -10,6 +10,7 @@ h1 {
   font-weight: bold;
   background: -webkit-linear-gradient(black, #fff6b7);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
