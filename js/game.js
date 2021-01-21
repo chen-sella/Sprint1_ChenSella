@@ -5,9 +5,6 @@ const GAMEOVER = '🤯';
 const VICTORY = '😎';
 const MINE = '💣';
 const FLAG = '🚩';
-const ONE = '1️';
-const TWO = '2️';
-const THREE = '3️';
 const EMPTY = '';
 
 var gBoard;
@@ -15,13 +12,21 @@ var gLevel;
 var gGame;
 var gElDiv = document.querySelector('.gameStatus');
 var gElMines = document.querySelector('.mines-left');
+var gElLivesCount = document.querySelector('.lives-count');
+var gElBestTime = document.querySelector('.best');
+var gBestTime;
+
 
 function initGame(size, mines) {
   gLevel = {
     SIZE: size,
     MINES: mines,
   };
+
+  gBestTime = localStorage.getItem(`bestTimeLevel${gLevel.SIZE}`);
+  gElBestTime.innerHTML = gBestTime;
   gElMines.innerHTML = gLevel.MINES;
+  gElLivesCount.innerHTML = '3';
   gBoard = buildBoard(gLevel.SIZE);
   renderBoard(gBoard);
 
@@ -30,7 +35,7 @@ function initGame(size, mines) {
     shownCount: 0, //How many cells are shown
     markedCount: 0, //How many cells are marked (with a flag)
     secsPassed: 0, //How many seconds passed
-    lives:3,
+    lives: 3,
   };
 
   gElDiv.innerHTML = STARTGAME;
@@ -81,57 +86,34 @@ function setMinesNegsCount(board) {
   }
 }
 
-function renderBoard(board) {
-  var strHTML = '';
-
-  for (var i = 0; i < board.length; i++) {
-    strHTML += '<tr>';
-    for (var j = 0; j < board[0].length; j++) {
-      var cell = board[i][j];
-      var className = cell.isShown ? 'cells flipped' : 'cells';
-      var id = `cell-${i}-${j}`;
-      strHTML += `<td id="${id}" class="${className}" onclick="cellClicked(this, ${i}, ${j})"
-       onmousedown="cellMarked(event, ${i}, ${j})" oncontextmenu="return false;"></td>`;
-    }
-    strHTML += '</tr>';
-  }
-  var elBoard = document.querySelector('.board');
-  elBoard.innerHTML = strHTML;
-}
-
 function cellClicked(elCell, i, j) {
   if (!gGame.isOn) return;
 
   var cell = gBoard[i][j];
 
   if (cell.isMarked) return;
-
   else if (cell.isShown) return;
-
   else if (cell.isMine) {
-    if (gGame.lives === 0){
+    if (gGame.lives === 0) {
       gameOver();
       return;
-    }
-    else{
+    } else {
       decreaseLives(elCell);
       return;
     }
-    
-
   } else {
     cell.isShown = true;
     gGame.shownCount++;
     elCell.classList.add('flipped');
-    if (!cell.minesAroundCount) {
-      if (gGame.shownCount === 1) {
+    if (!cell.minesAroundCount) { 
+      if (gGame.shownCount === 1) { //first click on the board
         expandShown(gBoard, i, j);
         randomMinesLocation(gLevel.MINES);
         setMinesNegsCount(gBoard);
         renderBoard(gBoard);
       }
       expandShown(gBoard, i, j);
-    } else {
+    } else { //cell has mine neighbors so no expandShown
       var value = getCellValue(cell);
       elCell.innerHTML = value;
       checkGameOver();
@@ -139,47 +121,26 @@ function cellClicked(elCell, i, j) {
   }
 }
 
-function getCellValue(cell) {
-  var value;
-
-  if (cell.minesAroundCount === 0) {
-    value = EMPTY;
-  } else {
-    value = cell.minesAroundCount;
-  }
-
-  return value;
-}
-
 function cellMarked(ev, i, j) {
   var cell = gBoard[i][j];
   var elCell = document.querySelector(`#cell-${i}-${j}`);
 
-  if (cell.isShown) return;
+  if (cell.isShown) return; //can't locate a flag on a flipped cell
 
   if (ev.which == 3) {
-    if (cell.isMarked) {
+    if (cell.isMarked) { //checking if I'm re-pressing a flag;
       elCell.innerHTML = EMPTY;
       cell.isMarked = false;
       gGame.markedCount--;
-      gElMines.innerHTML ++;
+      gElMines.innerHTML++;
     } else {
       elCell.innerHTML = FLAG;
       cell.isMarked = true;
       gGame.markedCount++;
-      gElMines.innerHTML --;
+      gElMines.innerHTML--;
     }
   }
   checkGameOver();
-}
-
-function checkGameOver() {
-  var cellsToReveal = Math.pow(gLevel.SIZE, 2) - gLevel.MINES;
-  if (gGame.markedCount === gLevel.MINES && gGame.shownCount === cellsToReveal) {
-    console.log('Victory!');
-    stopClock();
-    gElDiv.innerHTML = VICTORY;
-  }
 }
 
 function expandShown(board, i, j) {
@@ -190,7 +151,6 @@ function expandShown(board, i, j) {
     for (var j = pos.j - 1; j <= pos.j + 1; j++) {
       if (j < 0 || j > board[0].length - 1) continue;
       if (i === pos.i && j === pos.j) continue;
-
       var neighbor = board[i][j];
       var elNeighbor = document.querySelector(`#cell-${i}-${j}`);
       elNeighbor.innerHTML = getCellValue(neighbor);
@@ -199,7 +159,11 @@ function expandShown(board, i, j) {
         neighbor.isShown = true;
         gGame.shownCount++;
       }
-    }
+      // if (neighbor.minesAroundCount !== 0) return;
+      // else{
+      //   expandShown(board, i, j);
+      // }
+      }
   }
   checkGameOver();
 }
@@ -224,7 +188,7 @@ function randomMinesLocation(mines) {
   var num = 0;
 
   while (num < mines) {
-    var minePos = {
+    var minePos = { //draw two random numbers for i and j
       i: getRandomIntInclusive(0, gBoard.length - 1),
       j: getRandomIntInclusive(0, gBoard.length - 1),
     };
@@ -232,24 +196,12 @@ function randomMinesLocation(mines) {
     var elCell = document.querySelector(`#cell-${minePos.i}-${minePos.j}`);
     var isFlipped = elCell.classList.contains('flipped');
 
-    if (isFlipped) continue;
-    else if (cell.isShown) continue;
-    else if (cell.isMine) continue;
+    if (isFlipped) continue; //can't locate a mine on a flipped cell
+    else if (cell.isShown) continue; //can't locate a mine on a flipped cell
+    else if (cell.isMine) continue; //can't locate a mine on a mine
     else {
       cell.isMine = true;
       num++;
     }
   }
-}
-
-function decreaseLives(elCell){
-  gGame.lives --
-  elCell.innerHTML = MINE;
-  var elLivesCount = document.querySelector('.lives-count');
-  elLivesCount.innerHTML = `${gGame.lives}`;
-
-  setTimeout(() => {
-    elCell.innerHTML = EMPTY
-
-  }, 2000);
 }

@@ -13,23 +13,31 @@
 
 <body onload="initGame(4,2)">
     <h1>Minesweeper</h1>
-    <table onmousedown="startClock()">
-        <div class="container">
-            <a id="4" class="difficulty" onclick="initGame(4,2)">Beginner</a>
-            <a id="8" class="difficulty" onclick="initGame(8,12)">Medium</a>
-            <a id="12" class="difficulty" onclick="initGame(12,30)">Expert</a>
-        </div>
-        <div class="info">
-            <div class="lives">Lives:<span class="lives-count">3</span></div>
-            <div class="timer">Game Time: <span class="time">0</span></div>
-            <div class="mines">Mines: <span class="mines-left"></span></div>
-        </div>
-        <div class="gameStatus" onclick="initGame(4,2)"></div>
+    <div class="diff-container">
+        <a id="4" class="difficulty" onclick="initGame(4,2)">Beginner</a>
+        <a id="8" class="difficulty" onclick="initGame(8,12)">Medium</a>
+        <a id="12" class="difficulty" onclick="initGame(12,30)">Expert</a>
+    </div>
+    <div class="info">
+        <div class="live"></div>
+        <div class="timer">Game Time: <span class="time">0</span></div>
+        <div class="mines">Mines: <span class="mines-left"></span></div>
+        <div class="best-time">Best time: <span class="best"></span></div>
+    </div>
+    <div class="gameStatus" onclick="initGame(`${gLevel.SIZE}`,`${gLevel.MINES}`)"></div>
+    <div class="container">
+        <!-- <div class="hint">
+            <ul>
+                <li onclick="hint()">💡</li>
+                <li onclick="hint()">💡</li>
+                <li onclick="hint()">💡</li>
+            </ul>
+        </div> -->
+        <table onmousedown="startClock()">
+            <tbody class="board"></tbody>
+        </table>
+    </div>
 
-        <tbody class="board">
-
-        </tbody>
-    </table>
     <script src="js/util.js"></script>
     <script src="js/stopwatch.js"></script>
     <script src="js/game.js"></script>

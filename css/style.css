@@ -4,8 +4,8 @@ body {
   background-color: sienna;
 }
 
-h1{
-  font-size: 42px;
+h1 {
+  font-size: 48px;
   margin: 1.5%;
   font-weight: bold;
   background: -webkit-linear-gradient(black, #fff6b7);
@@ -13,8 +13,8 @@ h1{
   -webkit-text-fill-color: transparent;
 }
 
-.container {
-  margin: 3%;
+.diff-container {
+  margin: 2%;
   text-align: center;
 }
 
@@ -22,7 +22,7 @@ h1{
   border: 1px solid black;
   border-radius: 3px;
   background-color: #fff6b7;
-  padding: 1%;
+  padding: 0.5%;
   margin: 10px;
   cursor: pointer;
 }
@@ -31,60 +31,104 @@ h1{
   opacity: 0.65;
 }
 
-.gameStatus{
-    text-align: center;
-    padding: 5px;
-    font-size: xx-large;
-    cursor: pointer;
-}
-
-.info{
+.gameStatus {
   text-align: center;
-  margin-bottom: 1%;
+  padding: 5px;
+  font-size: xx-large;
+  cursor: pointer;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.timer, .lives, .mines {
+.info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer,
+.lives,
+.mines,
+.best-time {
   border: 1px solid black;
   background-color: #fff6b7;
   border-radius: 3px;
-  padding: 10px;
+  padding: 0.5%;
   margin: 15px;
   display: inline;
 }
 
+/* ul {
+  list-style-type: none;
+  font-size: xx-large;
+  position: absolute;
+  margin-left: 16%;
+} */
+
 table {
-  margin-left: auto;
-  margin-right: auto;
   border-collapse: collapse;
   table-layout: fixed;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 td {
   border: 1px solid black;
-  height: 40px;
-  width: 40px;
+  height: 38px;
+  width: 38px;
   text-align: center;
   font-size: 15px;
   cursor: pointer;
 }
 
 td:after {
-    content: "\00A0";
-  }
+  content: '\00A0';
+}
 
 .cells {
-    background: linear-gradient(to top, #d3d3d3, #d3d3d3, #d3d3d3, #d3d3d3, #d3d3d3, #BDBDBD, #9E9E9E);
+  background: linear-gradient(
+    to top,
+    #d3d3d3,
+    #d3d3d3,
+    #d3d3d3,
+    #d3d3d3,
+    #d3d3d3,
+    #bdbdbd,
+    #9e9e9e
+  );
   /* background-color: #e5e5e5; */
 }
 
 .flipped {
-    background: linear-gradient(to top, #BDBDBD, #BDBDBD, #BDBDBD, #BDBDBD, #BDBDBD, #7d7d7d, #696969);
+  background: linear-gradient(
+    to top,
+    #bdbdbd,
+    #bdbdbd,
+    #bdbdbd,
+    #bdbdbd,
+    #bdbdbd,
+    #7d7d7d,
+    #696969
+  );
 }
 
 .empty {
   background-color: #e5e5e5;
 }
 
-.bomb{
+.bomb {
   background-color: brown;
+}
+
+@media only screen and (max-width: 425px) {
+  .container {
+    margin: 6%;
+  }
+  td {
+    font-size: 10px;
+    height: 33px;
+    width: 30px;
+  }
 }
