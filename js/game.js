@@ -57,7 +57,6 @@ function buildBoard(size) {
       board[i][j] = cell;
     }
   }
-  console.log(board);
   return board;
 }
 
@@ -100,17 +99,16 @@ function cellClicked(elCell, i, j) {
       decreaseLives(elCell);
       return;
     }
-  } 
-  else {
+  } else {
     cell.isShown = true;
     gGame.shownCount++;
     elCell.classList.add('flipped');
     if (!cell.minesAroundCount) {
       if (gGame.shownCount === 1) {
-        //first click on the board
+        // first click on the board
         expandShown(gBoard, i, j);
-        startClock();
         randomMinesLocation(gLevel.MINES);
+        startClock();
         setMinesNegsCount(gBoard);
         renderBoard(gBoard);
       }
@@ -133,7 +131,7 @@ function cellMarked(ev, i, j) {
 
   if (ev.which == 3) {
     if (cell.isMarked) {
-      //checking if I'm re-pressing a flag;
+      //check if I'm re-pressing a flag;
       elCell.innerHTML = EMPTY;
       cell.isMarked = false;
       gGame.markedCount--;
@@ -144,6 +142,9 @@ function cellMarked(ev, i, j) {
       gGame.markedCount++;
       gElMines.innerHTML--;
     }
+  }
+  if (gGame.markedCount === 1) {
+    startClock();
   }
   checkGameOver();
 }
@@ -165,30 +166,9 @@ function expandShown(board, i, j) {
         neighbor.isShown = true;
         gGame.shownCount++;
       }
-      // if (neighbor.minesAroundCount !== 0) return;
-      // else{
-      //   expandShown(board, i, j);
-      // }
     }
   }
   checkGameOver();
-}
-
-function gameOver() {
-  gGame.isOn = false;
-  stopClock();
-  gElLivesCount.innerHTML = '0';
-
-  for (var i = 0; i < gBoard.length; i++) {
-    for (var j = 0; j < gBoard.length; j++) {
-      var cell = gBoard[i][j];
-      var elCell = document.querySelector(`#cell-${i}-${j}`);
-      if (cell.isMine) {
-        elCell.innerHTML = MINE;
-      }
-    }
-  }
-  gElDiv.innerHTML = GAMEOVER;
 }
 
 function randomMinesLocation(mines) {
@@ -217,19 +197,19 @@ function randomMinesLocation(mines) {
   }
 }
 
-function checkGameOver() {
-  var cellsToReveal = Math.pow(gLevel.SIZE, 2) - gLevel.MINES;
-  
-  if (
-    gGame.markedCount === gLevel.MINES &&
-    gGame.shownCount === cellsToReveal
-  ) {
-    stopClock();
-    gElDiv.innerHTML = VICTORY;
-    bestTime();
+function gameOver() {
+  gGame.isOn = false;
+  stopClock();
+  gElLivesCount.innerHTML = '0';
+
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard.length; j++) {
+      var cell = gBoard[i][j];
+      var elCell = document.querySelector(`#cell-${i}-${j}`);
+      if (cell.isMine) {
+        elCell.innerHTML = MINE;
+      }
+    }
   }
-}
-
-function manuallyCreate(){
-
+  gElDiv.innerHTML = GAMEOVER;
 }

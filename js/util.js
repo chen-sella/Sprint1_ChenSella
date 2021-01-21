@@ -26,10 +26,10 @@ function decreaseLives(elCell) {
   gGame.lives--;
   elCell.innerHTML = MINE;
   gElLivesCount.innerHTML = `${gGame.lives}`;
-
+ 
   setTimeout(() => {
     elCell.innerHTML = EMPTY;
-  }, 2000);
+  }, 1000);
 }
 
 function getCellValue(cell) {
@@ -41,6 +41,19 @@ function getCellValue(cell) {
     value = cell.minesAroundCount;
   }
   return value;
+}
+
+function checkGameOver() {
+  var cellsToReveal = Math.pow(gLevel.SIZE, 2) - gLevel.MINES;
+  
+  if (
+    gGame.markedCount === gLevel.MINES &&
+    gGame.shownCount === cellsToReveal
+  ) {
+    stopClock();
+    gElDiv.innerHTML = VICTORY;
+    bestTime();
+  }
 }
 
 function bestTime() {
@@ -68,7 +81,7 @@ function style(cell, elCell) {
       elCell.style.color = '#b93b2d';
       break;
     case 2:
-      elCell.style.color = '#dbae5c';
+      elCell.style.color = '#e5b157';
       break;
     case 3:
       elCell.style.color = '#526E7C';
@@ -82,5 +95,7 @@ function style(cell, elCell) {
     case 6:
       elCell.style.color = '#697269';
       break;
+    case 7:
+      elCell.style.color ='#b2a684'
   }
 }

@@ -2,13 +2,14 @@ body {
   font-family: 'Signika', sans-serif;
   text-align: center;
   background-color: #e2d5ae;
+  word-spacing: 3px;
 }
 
 h1 {
   font-size: 46px;
   margin: 1.5%;
   font-weight: bold;
-  background: -webkit-linear-gradient(black, #526E7C);
+  background: -webkit-linear-gradient(#314047, #5b7987);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -20,7 +21,7 @@ h1 {
 }
 
 .difficulty {
-  border: 4px solid #EDE0B6;
+  border: 3px solid #EDE0B6;
   color: #526E7C;
   font-weight: 600;
   border-radius: 7px;
@@ -53,7 +54,7 @@ h1 {
 .lives,
 .mines,
 .best-time {
-  border: 4px solid #EDE0B6;
+  border: 3px solid #EDE0B6;
   color: #526E7C;
   font-weight: 600;
   border-radius: 7px;
@@ -103,7 +104,12 @@ td:after {
   );
 }
 
+.cells:hover{
+  opacity:0.45;
+}
+
 .flipped {
+  cursor: auto;
   background: linear-gradient(
     to top,
     #DCCA95,
@@ -116,16 +122,12 @@ td:after {
   );
 }
 
-.empty {
-  background-color: #DA693D;
-}
-
-.bomb {
-  background-color: brown;
+.flipped:hover{
+  opacity: 1;
 }
 
 @media only screen and (max-width: 425px) {
-  .container {
+  .diff-container {
     margin: 6%;
   }
   td {
