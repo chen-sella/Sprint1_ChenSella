@@ -14,7 +14,7 @@ function renderBoard(board) {
       var className = cell.isShown ? 'cells flipped' : 'cells';
       var id = `cell-${i}-${j}`;
       strHTML += `<td id="${id}" class="${className}" onclick="cellClicked(this, ${i}, ${j})"
-       onmousedown="cellMarked(event, ${i}, ${j})" oncontextmenu="return false;"></td>`;
+       onmousedown="cellMarked(event, ${i}, ${j})" oncontextmenu="return false"></td>`;
     }
     strHTML += '</tr>';
   }
@@ -69,6 +69,15 @@ function bestTime() {
       gElBestTime.innerHTML = gBestTime;
     }
   }
+}
+
+function showCell(cell, elCell){
+  elCell.classList.add('flipped');
+  cell.isShown = true;
+  var value = getCellValue(cell);
+  elCell.innerHTML = value;
+  style(cell, elCell);
+  gGame.shownCount++
 }
 
 function startOver() {

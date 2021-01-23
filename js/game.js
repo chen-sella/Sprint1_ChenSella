@@ -51,6 +51,7 @@ function buildBoard(size) {
         minesAroundCount: 0,
         location: { i: i, j: j },
         isShown: false,
+        recisShown: false,
         isMine: false,
         isMarked: false,
       };
@@ -113,6 +114,7 @@ function cellClicked(elCell, i, j) {
         renderBoard(gBoard);
       }
       expandShown(gBoard, i, j);
+      recExpandShow(gBoard, i, j);
     } else {
       //cell has mine neighbors so no expandShown
       var value = getCellValue(cell);
@@ -212,4 +214,30 @@ function gameOver() {
     }
   }
   gElDiv.innerHTML = GAMEOVER;
+}
+
+function recExpandShow(board, i, j) {
+  var elCell = document.querySelector(`#cell-${i}-${j}`);
+  var cell = board[i][j];
+  if (cell.recisShown) return;
+  else if (cell.minesAroundCount){
+    if (!cell.isShown){
+      showCell(cell, elCell)
+    }
+    cell.recisShown = true;
+    return;
+  } 
+  else {
+    if (!cell.isShown){
+      showCell(cell, elCell)
+    }
+    cell.recisShown = true;
+    for (var x = i - 1; x <= i + 1; x++) {
+      if (x < 0 || x > board.length - 1) continue;
+      for (var y = j - 1; y <= j + 1; y++){
+        if (y < 0 || y > board.length - 1) continue;
+        recExpandShow(board,x,y)
+      } 
+    }  
+  }
 }
