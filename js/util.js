@@ -81,7 +81,7 @@ function style(cell, elCell) {
       elCell.style.color = '#b93b2d';
       break;
     case 2:
-      elCell.style.color = '#e5b157';
+      elCell.style.color = '#ce9b44';
       break;
     case 3:
       elCell.style.color = '#526E7C';
